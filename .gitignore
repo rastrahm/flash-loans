@@ -1,0 +1,55 @@
+# Foundry
+cache/
+out/
+broadcast/
+
+# Dependencias Foundry (forge install)
+/lib/
+
+# Variables de entorno y secretos
+.env
+.env.*
+!.env.example
+!.env*.example
+
+# Cobertura y reportes
+lcov.info
+coverage/
+gas-report.txt
+gas-snapshot
+
+# Frontend (Next.js) — fuera de alcance v1
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/build/
+frontend/dist/
+frontend/.turbo/
+frontend/.vercel/
+frontend/next-env.d.ts
+frontend/*.tsbuildinfo
+frontend/coverage/
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# IDE y editores
+.idea/
+.vscode/*
+!.vscode/settings.json
+*.swp
+*.swo
+*~
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Logs y temporales
+*.log
+tmp/
+temp/

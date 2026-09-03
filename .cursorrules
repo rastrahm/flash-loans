@@ -1,0 +1,30 @@
+# .cursorrules — Module 08: Flash Loans & Atomic Arbitrage Execution
+
+## MODULE OVERVIEW
+Focus on building an ERC-3156 compliant Flash Loan provider and a gas-optimized Atomic Arbitrage Executor contract that identifies price discrepancies across two AMMs, executes zero-capital swaps, repays the loan with premium, and retains net profits atomically using Foundry and Solidity 0.8.24.
+
+---
+
+## 1. TECHNICAL CONSTRAINTS & STACK
+
+- **Compiler Version:** Strictly `pragma solidity 0.8.24;` (no floating pragmas).
+- **Tooling:** Foundry (`forge` for unit testing, mainnet fork testing, and trace analysis).
+- **Standard Protocol:** Implement `IERC3156FlashLender` on the pool and `IERC3156FlashBorrower` on the arbitrage receiver contract.
+- **Atomic Guarantee:** If the arbitrage trade fails to cover the principal + fee, the entire transaction MUST revert.
+
+---
+
+## 2. CODING & SECURITY RULES
+
+- **Callback Authentication:** Verify strictly inside `onFlashLoan()` that `msg.sender == address(flashLender)` and `initiator == address(this)`.
+- **Custom Errors:** Use explicit custom errors (`error InvalidInitiator()`, `error UntrustedLender()`, `error UnprofitableArbitrage()`, `error LoanRepaymentFailed()`).
+- **Zero-Storage Profit Handling:** Transfer profits directly to `owner` or internal treasury without writing intermediate state variables to minimize gas overhead during execution.
+- **Reentrancy Guard:** Lock the flash loan function to prevent reentering the provider during callback execution.
+
+---
+
+## 3. TESTING REQUIREMENTS
+
+- **Foundry Unit & Fork Tests:** Mock two AMM pools with artificial price imbalances and verify atomic flash loan execution.
+- **Unprofitable Execution Reverts:** Test that trades generating negative profit explicitly revert without losing capital (except gas spent on failure).
+- **Unauthorized Call Tests:** Verify that third-party callers cannot trigger the borrower callback directly or steal funds.
