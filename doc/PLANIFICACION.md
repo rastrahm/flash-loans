@@ -1,6 +1,6 @@
 # Planificación — Module 08: Flash Loans & Atomic Arbitrage Execution
 
-**Estado:** Fase **0** ✅ — scaffold Foundry + interfaces ERC-3156. Siguiente: fase **1** (tests failing del lender).
+**Estado:** Fase **1** ✅ — tests TDD del lender en rojo. Siguiente: fase **2** (`FlashLoanPool` mínimo).
 
 ## 1. Objetivo del proyecto
 
@@ -225,7 +225,7 @@ El balance del pool al final debe ser ≥ balance inicial + fee (liquidez no dre
 | Fase | Entregable | Estado |
 |------|------------|--------|
 | **0** | Docs (`doc/`) + scaffold Foundry + interfaces ERC-3156 | ✅ |
-| **1** | Tests failing: `flashLoan`, fee, maxLoan, reverts | ⬜ |
+| **1** | Tests failing: `flashLoan`, fee, maxLoan, reverts | ✅ |
 | **2** | `FlashLoanPool` mínimo (deposit + flashLoan sin arbitraje) | ⬜ |
 | **3** | Tests failing `AtomicArbitrage` + mocks AMM desbalanceados | ⬜ |
 | **4** | `onFlashLoan` auth + swaps + repay + profit to owner | ⬜ |

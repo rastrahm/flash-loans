@@ -2,7 +2,7 @@
 
 Proveedor de flash loans **ERC-3156** y ejecutor de arbitraje atómico entre dos AMMs. Solidity `0.8.24` + Foundry.
 
-**Estado:** Fase **0** ✅ (scaffold + interfaces). Contratos y tests: fases 1–8.
+**Estado:** Fase **1** ✅ (tests TDD del lender en rojo). Fase 2: implementar `FlashLoanPool`.
 
 ---
 
@@ -44,19 +44,17 @@ forge test
 
 ---
 
-## Estructura (fase 0)
+## Estructura (fase 1)
 
 ```
-src/interfaces/IERC3156FlashLender.sol
-src/interfaces/IERC3156FlashBorrower.sol
-src/interfaces/IFlashLoanPool.sol
-src/interfaces/IAtomicArbitrage.sol
-src/interfaces/ISimpleAMM.sol
+src/FlashLoanPool.sol          # esqueleto TDD (NotImplemented)
+src/mocks/MockERC20.sol
+src/interfaces/…
 src/libraries/ArbitrageMath.sol
-src/mocks/          # fase 1+
-test/               # tests TDD fase 1+
-script/             # Deploy.s.sol fase 6+
+test/FlashLoanPool.t.sol
+test/helpers/FlashBorrowers.sol
+script/                        # Deploy.s.sol fase 6+
 doc/
 ```
 
-Pendiente de implementación: `FlashLoanPool.sol`, `AtomicArbitrage.sol`.
+Pendiente: lógica de `FlashLoanPool` (fase 2) y `AtomicArbitrage` (fases 3–4).
