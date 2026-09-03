@@ -1,6 +1,6 @@
 # Documentación — Module 08: Flash Loans & Atomic Arbitrage
 
-Índice de la carpeta `doc/`. Diseño **to-be** previo a la implementación (TDD).
+Índice de la carpeta `doc/`. Diseño **to-be**; scaffold Foundry listo (fase 0).
 
 | Documento | Contenido |
 |-----------|-----------|
@@ -9,7 +9,7 @@
 | [diagrama-flujo.md](./diagrama-flujo.md) | Flujos flash loan, callback, swaps atómicos, reembolsos |
 | [flujograma.md](./flujograma.md) | Operativo, seguridad, unprofitable revert, pipeline TDD |
 
-**Estado:** Fase **0** — planificación y diagramas (contratos aún no implementados).
+**Estado:** Fase **0** ✅ — docs + `foundry.toml` + interfaces. Contratos: fases 1–8.
 
 **Contratos previstos:** `FlashLoanPool` · `AtomicArbitrage` · mocks AMM  
 **Estándar:** ERC-3156 (`IERC3156FlashLender` / `IERC3156FlashBorrower`)
