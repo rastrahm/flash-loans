@@ -29,6 +29,9 @@ interface IFlashLoanPool {
     /// @notice Dirección cero no permitida.
     error ZeroAddress();
 
+    /// @notice `feeBps` supera el máximo permitido (`10_000` = 100%).
+    error FeeBpsTooHigh();
+
     // -------------------------------------------------------------------------
     // Events
     // -------------------------------------------------------------------------

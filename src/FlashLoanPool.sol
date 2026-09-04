@@ -15,6 +15,7 @@ import {IFlashLoanPool} from "./interfaces/IFlashLoanPool.sol";
  * @title FlashLoanPool
  * @notice Pool ERC-3156 de un solo token: liquidez depositable y flash loans con fee en bps.
  * @dev CEI + `nonReentrant` en `flashLoan`. Repay vía `transferFrom`; fallo → `LoanRepaymentFailed`.
+ *      Modelo v1: liquidez custodiada; `withdraw` solo `owner` (`Ownable2Step`).
  */
 contract FlashLoanPool is IERC3156FlashLender, IFlashLoanPool, ReentrancyGuard, Ownable2Step {
     using SafeERC20 for IERC20;
@@ -22,8 +23,8 @@ contract FlashLoanPool is IERC3156FlashLender, IFlashLoanPool, ReentrancyGuard, 
     /// @notice Magic value ERC-3156 que debe devolver `onFlashLoan`.
     bytes32 public constant CALLBACK_SUCCESS = keccak256("ERC3156FlashBorrower.onFlashLoan");
 
-    /// @dev Denominador de basis points (`feeBps / 10_000`).
-    uint256 private constant BPS_DENOMINATOR = 10_000;
+    /// @notice Denominador de basis points (`feeBps / BPS_DENOMINATOR`).
+    uint256 public constant BPS_DENOMINATOR = 10_000;
 
     /// @inheritdoc IFlashLoanPool
     address public immutable override token;
@@ -34,17 +35,25 @@ contract FlashLoanPool is IERC3156FlashLender, IFlashLoanPool, ReentrancyGuard, 
     /**
      * @notice Configura el token prestable y la prima en basis points.
      * @param token_ ERC-20 único soportado.
-     * @param feeBps_ Fee (`5` = 0.05%). Denominador 10_000.
+     * @param feeBps_ Fee en bps (`5` = 0.05%). Máximo `BPS_DENOMINATOR` (100%).
      */
     constructor(address token_, uint256 feeBps_) Ownable(msg.sender) {
         if (token_ == address(0)) {
             revert IFlashLoanPool.ZeroAddress();
         }
+        if (feeBps_ > BPS_DENOMINATOR) {
+            revert IFlashLoanPool.FeeBpsTooHigh();
+        }
         token = token_;
         feeBps = feeBps_;
     }
 
-    /// @inheritdoc IERC3156FlashLender
+    /**
+     * @notice Máximo principal prestable para `token_` en este bloque.
+     * @dev Token no soportado → `0` (ERC-3156). Soportado → balance actual del pool.
+     * @param token_ ERC-20 solicitado.
+     * @return Liquidez disponible.
+     */
     function maxFlashLoan(address token_) external view override returns (uint256) {
         if (token_ != token) {
             return 0;
@@ -52,7 +61,12 @@ contract FlashLoanPool is IERC3156FlashLender, IFlashLoanPool, ReentrancyGuard, 
         return IERC20(token).balanceOf(address(this));
     }
 
-    /// @inheritdoc IERC3156FlashLender
+    /**
+     * @notice Prima cobrada por prestar `amount` de `token_`.
+     * @param token_ ERC-20 solicitado.
+     * @param amount Principal a prestar.
+     * @return Fee en unidades del token (`amount * feeBps / 10_000`).
+     */
     function flashFee(address token_, uint256 amount) external view override returns (uint256) {
         if (token_ != token) {
             revert IFlashLoanPool.UnsupportedToken();
@@ -60,7 +74,15 @@ contract FlashLoanPool is IERC3156FlashLender, IFlashLoanPool, ReentrancyGuard, 
         return amount * feeBps / BPS_DENOMINATOR;
     }
 
-    /// @inheritdoc IERC3156FlashLender
+    /**
+     * @notice Prestá `amount` de `token_` a `receiver` y exige repay `amount + fee` al volver del callback.
+     * @dev Orden: checks → transfer → `onFlashLoan` → magic value → pull repay → event.
+     * @param receiver Contrato `IERC3156FlashBorrower`.
+     * @param token_ ERC-20 a prestar (debe ser el token del pool).
+     * @param amount Principal.
+     * @param data Payload reenviado a `onFlashLoan`.
+     * @return `true` si el préstamo y el repay se completaron.
+     */
     function flashLoan(IERC3156FlashBorrower receiver, address token_, uint256 amount, bytes calldata data)
         external
         override
@@ -98,7 +120,10 @@ contract FlashLoanPool is IERC3156FlashLender, IFlashLoanPool, ReentrancyGuard, 
         return true;
     }
 
-    /// @inheritdoc IFlashLoanPool
+    /**
+     * @notice Aporta liquidez del token del pool.
+     * @param amount Unidades a depositar (`> 0`).
+     */
     function deposit(uint256 amount) external override {
         if (amount == 0) {
             revert IFlashLoanPool.ZeroAmount();
@@ -107,7 +132,11 @@ contract FlashLoanPool is IERC3156FlashLender, IFlashLoanPool, ReentrancyGuard, 
         emit LiquidityDeposited(msg.sender, amount);
     }
 
-    /// @inheritdoc IFlashLoanPool
+    /**
+     * @notice Retira liquidez ociosa hacia el owner.
+     * @dev Solo `owner` (`Ownable2Step`). No reduce préstamos en vuelo: el lock de `flashLoan` serializa.
+     * @param amount Unidades a retirar (`> 0`, ≤ balance).
+     */
     function withdraw(uint256 amount) external override onlyOwner {
         if (amount == 0) {
             revert IFlashLoanPool.ZeroAmount();
@@ -117,7 +146,7 @@ contract FlashLoanPool is IERC3156FlashLender, IFlashLoanPool, ReentrancyGuard, 
     }
 
     /**
-     * @notice Cobra `repayment` del receptor; cualquier fallo de pull → `LoanRepaymentFailed`.
+     * @dev Cobra `repayment` del receptor; cualquier fallo de pull → `LoanRepaymentFailed`.
      * @param loanToken ERC-20 prestado.
      * @param from Receptor del flash loan.
      * @param repayment `amount + fee`.

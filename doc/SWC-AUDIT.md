@@ -122,10 +122,11 @@ Cubierto en `test/Unauthorized.t.sol`.
 | ERC-3156 magic value | ✅ | `CALLBACK_SUCCESS` en lender y borrower |
 | Auth callback | ✅ | Lender + initiator |
 | Profit sin SSTORE | ✅ | Transfer directo a `owner` immutable |
-| NatSpec públicas/externas | ⚠️ | Presente en APIs principales; completar/ pulir en fase 8 |
+| NatSpec públicas/externas | ✅ | Fase 8 |
 | Fuzz ≥ 1000 runs | ✅ | `test/fuzz/FlashLoan.fuzz.t.sol` |
 | Invariantes liquidez | ✅ | `balance == deposits + fees − withdraws` |
-| Gas baseline | ⬜ | Pendiente fase 8 (`doc/GAS.md` + snapshot) |
+| Gas baseline | ✅ | `doc/GAS.md` + `.gas-snapshot` |
+| Cap `feeBps` | ✅ | `FeeBpsTooHigh` si `> 10_000` |
 
 ---
 
@@ -143,10 +144,10 @@ Cubierto en `test/Unauthorized.t.sol`.
 | # | Observación | Severidad | Acción sugerida |
 |---|-------------|-----------|-----------------|
 | 1 | `deposit` / `withdraw` sin `nonReentrant` | Info | Bajo riesgo (sin máquina de estados); opcional alinear con suite |
-| 2 | `feeBps` sin cota superior en constructor | Info | `require(feeBps <= 10_000)` o custom error |
-| 3 | Swaps con `minOut = 0` | Info (MEV) | Codificar mínimos por hop en `params` |
-| 4 | NatSpec / gas snapshot incompletos | Proceso | Fase 8 del plan |
-| 5 | Sin suite `test/attack/` dedicada (estilo 07) | Proceso | Cubierto por `Unauthorized` + reentrancy unit; opcional extraer |
+| 2 | ~~`feeBps` sin cota superior~~ → `FeeBpsTooHigh` | Resuelto F8 | `feeBps <= 10_000` |
+| 3 | Swaps con `minOut = 0` | Info (MEV) | Codificar mínimos por hop en `params` (v2) |
+| 4 | ~~NatSpec / gas snapshot incompletos~~ | Resuelto F8 | `GAS.md` + NatSpec API |
+| 5 | Sin suite `test/attack/` dedicada (estilo 07) | Proceso | Cubierto por `Unauthorized` + reentrancy unit |
 
 ---
 
@@ -172,11 +173,13 @@ Cubierto en `test/Unauthorized.t.sol`.
 ```text
 forge test --summary
 AtomicArbitrageTest    11 PASS
-FlashLoanPoolTest      20 PASS
+FlashLoanPoolTest      22 PASS
 UnauthorizedTest        5 PASS
 FlashLoanFuzzTest       8 PASS (1000 runs c/u)
 FlashLoanInvariantTest  4 PASS (256 runs)
-Total: 48 PASS / 0 FAIL
+FlashLoanGasTest        6 PASS
+ArbitrageForkTest       2 SKIP (sin MAINNET_RPC_URL) / PASS con RPC
+Total: 56 PASS / 0 FAIL / 2 SKIP
 ```
 
 ---
