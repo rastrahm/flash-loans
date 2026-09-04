@@ -2,7 +2,7 @@
 
 Proveedor de flash loans **ERC-3156** y ejecutor de arbitraje atómico entre dos AMMs. Solidity `0.8.24` + Foundry.
 
-**Estado:** Fase **5** ✅ (unprofitable atómico). Fase 6: unauthorized callback / initiator falso.
+**Estado:** Fase **7** ✅ (fuzz + invariant). Fase 8: fork opcional + gas snapshot + NatSpec.
 
 ---
 
@@ -24,6 +24,7 @@ Proveedor de flash loans **ERC-3156** y ejecutor de arbitraje atómico entre dos
 |-----|-------------|
 | [doc/README.md](./doc/README.md) | Índice de documentación |
 | [doc/PLANIFICACION.md](./doc/PLANIFICACION.md) | Plan, fases TDD y criterios de aceptación |
+| [doc/SWC-AUDIT.md](./doc/SWC-AUDIT.md) | Auditoría SWC-100–136 y mapeo a tests |
 | [doc/diagrama-clases.md](./doc/diagrama-clases.md) | UML de contratos |
 | [doc/diagrama-flujo.md](./doc/diagrama-flujo.md) | Flujos flash loan / callback / repay |
 | [doc/flujograma.md](./doc/flujograma.md) | Flujograma operativo y pipeline TDD |
@@ -44,15 +45,18 @@ forge test
 
 ---
 
-## Estructura (fase 5)
+## Estructura (fase 7)
 
 ```
 src/FlashLoanPool.sol
 src/AtomicArbitrage.sol
-src/mocks/MockAMM.sol
-test/FlashLoanPool.t.sol           # 20 PASS
-test/AtomicArbitrage.t.sol         # 11 PASS (incl. unprofitable atómico)
+test/FlashLoanPool.t.sol
+test/AtomicArbitrage.t.sol
+test/Unauthorized.t.sol
+test/fuzz/FlashLoan.fuzz.t.sol           # 8 PASS (1000 runs)
+test/invariant/FlashLoanHandler.sol
+test/invariant/FlashLoan.invariant.t.sol # 4 PASS (256 runs)
 doc/
 ```
 
-Pendiente: unauthorized (fase 6), fuzz/invariant (fase 7).
+Pendiente: fork / gas / NatSpec (fase 8).

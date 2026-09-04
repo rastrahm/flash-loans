@@ -1,6 +1,6 @@
 # Planificación — Module 08: Flash Loans & Atomic Arbitrage Execution
 
-**Estado:** Fase **5** ✅ — unprofitable atómico verificado. Siguiente: fase **6** (unauthorized callback).
+**Estado:** Fase **7** ✅ — fuzz + invariant. Siguiente: fase **8** (fork opcional + gas + NatSpec).
 
 ## 1. Objetivo del proyecto
 
@@ -230,8 +230,8 @@ El balance del pool al final debe ser ≥ balance inicial + fee (liquidez no dre
 | **3** | Tests failing `AtomicArbitrage` + mocks AMM desbalanceados | ✅ |
 | **4** | `onFlashLoan` auth + swaps + repay + profit to owner | ✅ |
 | **5** | Unprofitable revert (AMMs equilibrados / fee > spread) | ✅ |
-| **6** | Unauthorized: callback directo, initiator falso, reentrancy | ⬜ |
-| **7** | Fuzz amounts + invariant liquidez pool ≥ pre + fees netas | ⬜ |
+| **6** | Unauthorized: callback directo, initiator falso, reentrancy | ✅ |
+| **7** | Fuzz amounts + invariant liquidez pool ≥ pre + fees netas | ✅ |
 | **8** | Fork opcional + gas snapshot + NatSpec | ⬜ |
 
 ---
@@ -263,7 +263,7 @@ Invariante de capital: un flash loan que revierte **no** cambia balances de pool
 - [x] Trade no rentable → revert atómico; liquidez del pool intacta
 - [x] Profit transferido a `owner` sin variables de estado de acumulado
 - [x] `ReentrancyGuard` en `flashLoan`
-- [ ] Terceros no pueden invocar el callback con éxito
+- [x] Terceros no pueden invocar el callback con éxito
 - [x] Mocks de dos AMMs con imbalance verifican ejecución atómica
 - [x] `vm.expectRevert` en todos los caminos de fallo
 - [ ] NatSpec en funciones public/external
@@ -278,6 +278,7 @@ Invariante de capital: un flash loan que revierte **no** cambia balances de pool
 | [diagrama-clases.md](./diagrama-clases.md) | UML contratos, interfaces ERC-3156, tests |
 | [diagrama-flujo.md](./diagrama-flujo.md) | Secuencia flash loan → swaps → repay |
 | [flujograma.md](./flujograma.md) | Operativo, seguridad, TDD |
+| [SWC-AUDIT.md](./SWC-AUDIT.md) | Matriz SWC-100–136 + mapeo a tests |
 
 ---
 
