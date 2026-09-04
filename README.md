@@ -24,6 +24,7 @@ Proveedor de flash loans **ERC-3156** y ejecutor de arbitraje atómico entre dos
 |-----|-------------|
 | [doc/README.md](./doc/README.md) | Índice de documentación |
 | [doc/PLANIFICACION.md](./doc/PLANIFICACION.md) | Plan, fases TDD y criterios de aceptación |
+| [doc/SWC-AUDIT.md](./doc/SWC-AUDIT.md) | Auditoría SWC-100–136 y mapeo a tests |
 | [doc/diagrama-clases.md](./doc/diagrama-clases.md) | UML de contratos |
 | [doc/diagrama-flujo.md](./doc/diagrama-flujo.md) | Flujos flash loan / callback / repay |
 | [doc/flujograma.md](./doc/flujograma.md) | Flujograma operativo y pipeline TDD |

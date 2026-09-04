@@ -5,6 +5,7 @@
 | Documento | Contenido |
 |-----------|-----------|
 | [PLANIFICACION.md](./PLANIFICACION.md) | Objetivo, alcance, fases TDD, criterios de aceptación |
+| [SWC-AUDIT.md](./SWC-AUDIT.md) | Matriz SWC-100–136, mapeo a tests |
 | [diagrama-clases.md](./diagrama-clases.md) | UML: lender ERC-3156, borrower, mocks AMM, tests |
 | [diagrama-flujo.md](./diagrama-flujo.md) | Flujos flash loan, callback, swaps atómicos, reembolsos |
 | [flujograma.md](./flujograma.md) | Operativo, seguridad, unprofitable revert, pipeline TDD |

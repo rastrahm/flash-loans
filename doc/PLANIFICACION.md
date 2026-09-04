@@ -278,6 +278,7 @@ Invariante de capital: un flash loan que revierte **no** cambia balances de pool
 | [diagrama-clases.md](./diagrama-clases.md) | UML contratos, interfaces ERC-3156, tests |
 | [diagrama-flujo.md](./diagrama-flujo.md) | Secuencia flash loan → swaps → repay |
 | [flujograma.md](./flujograma.md) | Operativo, seguridad, TDD |
+| [SWC-AUDIT.md](./SWC-AUDIT.md) | Matriz SWC-100–136 + mapeo a tests |
 
 ---
 
