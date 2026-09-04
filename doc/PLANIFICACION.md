@@ -1,6 +1,6 @@
 # Planificación — Module 08: Flash Loans & Atomic Arbitrage Execution
 
-**Estado:** Fase **1** ✅ — tests TDD del lender en rojo. Siguiente: fase **2** (`FlashLoanPool` mínimo).
+**Estado:** Fase **2** ✅ — `FlashLoanPool` verde. Siguiente: fase **3** (tests failing `AtomicArbitrage` + mocks AMM).
 
 ## 1. Objetivo del proyecto
 
@@ -226,7 +226,7 @@ El balance del pool al final debe ser ≥ balance inicial + fee (liquidez no dre
 |------|------------|--------|
 | **0** | Docs (`doc/`) + scaffold Foundry + interfaces ERC-3156 | ✅ |
 | **1** | Tests failing: `flashLoan`, fee, maxLoan, reverts | ✅ |
-| **2** | `FlashLoanPool` mínimo (deposit + flashLoan sin arbitraje) | ⬜ |
+| **2** | `FlashLoanPool` mínimo (deposit + flashLoan sin arbitraje) | ✅ |
 | **3** | Tests failing `AtomicArbitrage` + mocks AMM desbalanceados | ⬜ |
 | **4** | `onFlashLoan` auth + swaps + repay + profit to owner | ⬜ |
 | **5** | Unprofitable revert (AMMs equilibrados / fee > spread) | ⬜ |
@@ -256,13 +256,13 @@ Invariante de capital: un flash loan que revierte **no** cambia balances de pool
 ## 10. Criterios de aceptación
 
 - [x] Scaffold Foundry (`0.8.24`, fuzz ≥ 1000)
-- [ ] `FlashLoanPool` implementa `IERC3156FlashLender`
+- [x] `FlashLoanPool` implementa `IERC3156FlashLender`
 - [ ] `AtomicArbitrage` implementa `IERC3156FlashBorrower`
 - [ ] Callback: `msg.sender == flashLender` e `initiator == address(this)`
 - [ ] Custom errors obligatorios (los cuatro del módulo)
 - [ ] Trade no rentable → revert atómico; liquidez del pool intacta
 - [ ] Profit transferido a `owner` sin variables de estado de acumulado
-- [ ] `ReentrancyGuard` en `flashLoan`
+- [x] `ReentrancyGuard` en `flashLoan`
 - [ ] Terceros no pueden invocar el callback con éxito
 - [ ] Mocks de dos AMMs con imbalance verifican ejecución atómica
 - [ ] `vm.expectRevert` en todos los caminos de fallo

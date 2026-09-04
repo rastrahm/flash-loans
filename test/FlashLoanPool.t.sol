@@ -18,8 +18,8 @@ import {
 
 /**
  * @title FlashLoanPoolTest
- * @notice Fase 1 (TDD): `maxFlashLoan`, `flashFee`, `flashLoan`, deposit/withdraw y reverts.
- * @dev Los caminos de lógica deben fallar hasta la fase 2 (esqueleto `NotImplemented`).
+ * @notice Suite unitaria del lender: `maxFlashLoan`, `flashFee`, `flashLoan`, deposit/withdraw y reverts.
+ * @dev Fase 2: caminos verdes. Reentrancy cubierta vía `ReenteringBorrower`.
  */
 contract FlashLoanPoolTest is Test {
     uint256 internal constant FEE_BPS = 5;
