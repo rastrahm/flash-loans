@@ -1,6 +1,6 @@
 # Planificación — Module 08: Flash Loans & Atomic Arbitrage Execution
 
-**Estado:** Fase **2** ✅ — `FlashLoanPool` verde. Siguiente: fase **3** (tests failing `AtomicArbitrage` + mocks AMM).
+**Estado:** Fase **3** ✅ — tests TDD de `AtomicArbitrage` + mocks AMM en rojo. Siguiente: fase **4** (implementar callback + swaps).
 
 ## 1. Objetivo del proyecto
 
@@ -227,7 +227,7 @@ El balance del pool al final debe ser ≥ balance inicial + fee (liquidez no dre
 | **0** | Docs (`doc/`) + scaffold Foundry + interfaces ERC-3156 | ✅ |
 | **1** | Tests failing: `flashLoan`, fee, maxLoan, reverts | ✅ |
 | **2** | `FlashLoanPool` mínimo (deposit + flashLoan sin arbitraje) | ✅ |
-| **3** | Tests failing `AtomicArbitrage` + mocks AMM desbalanceados | ⬜ |
+| **3** | Tests failing `AtomicArbitrage` + mocks AMM desbalanceados | ✅ |
 | **4** | `onFlashLoan` auth + swaps + repay + profit to owner | ⬜ |
 | **5** | Unprofitable revert (AMMs equilibrados / fee > spread) | ⬜ |
 | **6** | Unauthorized: callback directo, initiator falso, reentrancy | ⬜ |
