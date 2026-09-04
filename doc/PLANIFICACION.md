@@ -1,6 +1,6 @@
 # Planificación — Module 08: Flash Loans & Atomic Arbitrage Execution
 
-**Estado:** Fase **7** ✅ — fuzz + invariant. Siguiente: fase **8** (fork opcional + gas + NatSpec).
+**Estado:** Fases **0–8** ✅ — módulo cerrado (NatSpec + gas + Deploy + fork opcional + `FeeBpsTooHigh`).
 
 ## 1. Objetivo del proyecto
 
@@ -232,7 +232,7 @@ El balance del pool al final debe ser ≥ balance inicial + fee (liquidez no dre
 | **5** | Unprofitable revert (AMMs equilibrados / fee > spread) | ✅ |
 | **6** | Unauthorized: callback directo, initiator falso, reentrancy | ✅ |
 | **7** | Fuzz amounts + invariant liquidez pool ≥ pre + fees netas | ✅ |
-| **8** | Fork opcional + gas snapshot + NatSpec | ⬜ |
+| **8** | Fork opcional + gas snapshot + NatSpec (+ Deploy + `FeeBpsTooHigh`) | ✅ |
 
 ---
 
@@ -266,8 +266,12 @@ Invariante de capital: un flash loan que revierte **no** cambia balances de pool
 - [x] Terceros no pueden invocar el callback con éxito
 - [x] Mocks de dos AMMs con imbalance verifican ejecución atómica
 - [x] `vm.expectRevert` en todos los caminos de fallo
-- [ ] NatSpec en funciones public/external
+- [x] NatSpec en funciones public/external
 - [x] CEI + SafeERC20; sin `transfer`/`send` de ETH
+- [x] Gas baseline (`doc/GAS.md` + `.gas-snapshot`)
+- [x] `FeeBpsTooHigh` si `feeBps > 10_000`
+- [x] Fork suite con skip sin `MAINNET_RPC_URL`
+- [x] `script/Deploy.s.sol` para Anvil
 
 ---
 
@@ -279,6 +283,7 @@ Invariante de capital: un flash loan que revierte **no** cambia balances de pool
 | [diagrama-flujo.md](./diagrama-flujo.md) | Secuencia flash loan → swaps → repay |
 | [flujograma.md](./flujograma.md) | Operativo, seguridad, TDD |
 | [SWC-AUDIT.md](./SWC-AUDIT.md) | Matriz SWC-100–136 + mapeo a tests |
+| [GAS.md](./GAS.md) | Baseline gas, optimizaciones, snapshot |
 
 ---
 

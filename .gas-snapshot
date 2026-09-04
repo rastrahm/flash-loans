@@ -1,0 +1,6 @@
+FlashLoanGasTest:testGas_deposit() (gas: 40936)
+FlashLoanGasTest:testGas_execute_arbitrage() (gas: 222056)
+FlashLoanGasTest:testGas_flashFee() (gas: 7998)
+FlashLoanGasTest:testGas_flashLoan_repay() (gas: 52203)
+FlashLoanGasTest:testGas_maxFlashLoan() (gas: 13167)
+FlashLoanGasTest:testGas_withdraw() (gas: 42055)

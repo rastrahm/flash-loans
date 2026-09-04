@@ -89,6 +89,22 @@ contract FlashLoanPoolTest is Test {
         new FlashLoanPool(address(0), FEE_BPS);
     }
 
+    /**
+     * @notice `feeBps` > 10_000 revierte `FeeBpsTooHigh`.
+     */
+    function test_constructor_revertsFeeBpsTooHigh() public {
+        vm.expectRevert(IFlashLoanPool.FeeBpsTooHigh.selector);
+        new FlashLoanPool(address(token), 10_001);
+    }
+
+    /**
+     * @notice `feeBps == 10_000` (100%) es el máximo permitido.
+     */
+    function test_constructor_acceptsMaxFeeBps() public {
+        FlashLoanPool p = new FlashLoanPool(address(token), 10_000);
+        assertEq(p.feeBps(), 10_000);
+    }
+
     // -------------------------------------------------------------------------
     // maxFlashLoan
     // -------------------------------------------------------------------------

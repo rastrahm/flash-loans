@@ -2,7 +2,7 @@
 
 Proveedor de flash loans **ERC-3156** y ejecutor de arbitraje atómico entre dos AMMs. Solidity `0.8.24` + Foundry.
 
-**Estado:** Fase **7** ✅ (fuzz + invariant). Fase 8: fork opcional + gas snapshot + NatSpec.
+**Estado:** Fases **0–8** ✅ (módulo cerrado).
 
 ---
 
@@ -25,6 +25,7 @@ Proveedor de flash loans **ERC-3156** y ejecutor de arbitraje atómico entre dos
 | [doc/README.md](./doc/README.md) | Índice de documentación |
 | [doc/PLANIFICACION.md](./doc/PLANIFICACION.md) | Plan, fases TDD y criterios de aceptación |
 | [doc/SWC-AUDIT.md](./doc/SWC-AUDIT.md) | Auditoría SWC-100–136 y mapeo a tests |
+| [doc/GAS.md](./doc/GAS.md) | Gas report baseline y optimizaciones |
 | [doc/diagrama-clases.md](./doc/diagrama-clases.md) | UML de contratos |
 | [doc/diagrama-flujo.md](./doc/diagrama-flujo.md) | Flujos flash loan / callback / repay |
 | [doc/flujograma.md](./doc/flujograma.md) | Flujograma operativo y pipeline TDD |
@@ -41,22 +42,49 @@ forge install OpenZeppelin/openzeppelin-contracts@v5.2.0 --no-git
 
 forge build
 forge test
+forge snapshot --match-contract FlashLoanGasTest
+```
+
+Fork opcional:
+
+```shell
+# En `.env` (copiar desde `.env.example`)
+MAINNET_RPC_URL=https://...
+forge test --match-path test/fork/
 ```
 
 ---
 
-## Estructura (fase 7)
+## Deploy local (Anvil)
+
+```shell
+anvil
+forge script script/Deploy.s.sol:Deploy --rpc-url http://127.0.0.1:8545 --broadcast
+```
+
+---
+
+## Estructura
 
 ```
 src/FlashLoanPool.sol
 src/AtomicArbitrage.sol
+src/libraries/ArbitrageMath.sol
+src/mocks/MockERC20.sol
+src/mocks/MockAMM.sol
 test/FlashLoanPool.t.sol
 test/AtomicArbitrage.t.sol
 test/Unauthorized.t.sol
-test/fuzz/FlashLoan.fuzz.t.sol           # 8 PASS (1000 runs)
-test/invariant/FlashLoanHandler.sol
-test/invariant/FlashLoan.invariant.t.sol # 4 PASS (256 runs)
+test/fuzz/
+test/invariant/
+test/gas/FlashLoan.gas.t.sol
+test/fork/Arbitrage.fork.t.sol
+script/Deploy.s.sol
 doc/
 ```
 
-Pendiente: fork / gas / NatSpec (fase 8).
+---
+
+## Tests
+
+`forge test` → **56 PASS** · **2 SKIP** (fork sin `MAINNET_RPC_URL`)

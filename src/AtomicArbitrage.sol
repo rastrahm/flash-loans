@@ -14,7 +14,9 @@ import {ISimpleAMM} from "./interfaces/ISimpleAMM.sol";
 /**
  * @title AtomicArbitrage
  * @notice Ejecutor ERC-3156: flash loan → swap en dos AMMs → repay + profit al owner.
- * @dev Auth estricta en `onFlashLoan`. Profit sin SSTORE (transfer directo a `owner`).
+ * @dev Auth estricta en `onFlashLoan` (`UntrustedLender` / `InvalidInitiator`).
+ *      Profit sin SSTORE: transfer directo a `owner` immutable.
+ *      `params` ABI: `(address ammBuy, address ammSell, address tokenB, uint256 minProfit)`.
  */
 contract AtomicArbitrage is IERC3156FlashBorrower, IAtomicArbitrage {
     using SafeERC20 for IERC20;
@@ -30,8 +32,8 @@ contract AtomicArbitrage is IERC3156FlashBorrower, IAtomicArbitrage {
 
     /**
      * @notice Fija lender de confianza y destinatario de beneficios.
-     * @param flashLender_ Pool ERC-3156.
-     * @param owner_ Receptor del profit (sin SSTORE de acumulado).
+     * @param flashLender_ Pool ERC-3156 (`IFlashLoanPool` + `IERC3156FlashLender`).
+     * @param owner_ Receptor del profit (immutable; cero writes de acumulado).
      */
     constructor(address flashLender_, address owner_) {
         if (flashLender_ == address(0) || owner_ == address(0)) {
@@ -42,8 +44,10 @@ contract AtomicArbitrage is IERC3156FlashBorrower, IAtomicArbitrage {
     }
 
     /**
-     * @inheritdoc IAtomicArbitrage
-     * @dev `params` ABI: `(address ammBuy, address ammSell, address tokenB, uint256 minProfit)`.
+     * @notice Inicia un flash loan hacia este contrato y ejecuta el arbitraje en el callback.
+     * @dev Cualquiera puede llamar; el profit siempre va a `owner`.
+     * @param amount Principal a pedir prestado (`> 0`).
+     * @param params ABI-encoded: `ammBuy`, `ammSell`, `tokenB`, `minProfit`.
      */
     function execute(uint256 amount, bytes calldata params) external override {
         if (amount == 0) {
@@ -54,8 +58,13 @@ contract AtomicArbitrage is IERC3156FlashBorrower, IAtomicArbitrage {
     }
 
     /**
-     * @inheritdoc IERC3156FlashBorrower
-     * @dev Solo el lender configurado; `initiator` debe ser este contrato.
+     * @notice Callback ERC-3156: autentica, hace round-trip de swaps, paga profit y aprueba el repay.
+     * @param initiator Quien llamó `flashLoan` en el lender (debe ser `address(this)`).
+     * @param token ERC-20 prestado.
+     * @param amount Principal recibido.
+     * @param fee Prima a devolver junto con el principal.
+     * @param data Mismos `params` de `execute`.
+     * @return Magic value `CALLBACK_SUCCESS` si el camino es rentable.
      */
     function onFlashLoan(address initiator, address token, uint256 amount, uint256 fee, bytes calldata data)
         external
@@ -92,7 +101,7 @@ contract AtomicArbitrage is IERC3156FlashBorrower, IAtomicArbitrage {
     }
 
     /**
-     * @notice Round-trip: `token` → `tokenB` en `ammBuy`, luego `tokenB` → `token` en `ammSell`.
+     * @dev Round-trip: `token` → `tokenB` en `ammBuy`, luego `tokenB` → `token` en `ammSell`.
      * @param token Token prestado (input del primer swap).
      * @param amount Principal del flash loan.
      * @param ammBuy AMM donde se compra el intermediario.
