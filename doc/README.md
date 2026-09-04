@@ -9,7 +9,7 @@
 | [diagrama-flujo.md](./diagrama-flujo.md) | Flujos flash loan, callback, swaps atómicos, reembolsos |
 | [flujograma.md](./flujograma.md) | Operativo, seguridad, unprofitable revert, pipeline TDD |
 
-**Estado:** Fase **5** ✅ — unprofitable + capital intacto. Siguiente: fase **6**.
+**Estado:** Fase **6** ✅ — `Unauthorized.t.sol` (36 tests). Siguiente: fase **7**.
 
 **Contratos previstos:** `FlashLoanPool` · `AtomicArbitrage` · mocks AMM  
 **Estándar:** ERC-3156 (`IERC3156FlashLender` / `IERC3156FlashBorrower`)
