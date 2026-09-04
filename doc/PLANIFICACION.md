@@ -1,6 +1,6 @@
 # Planificación — Module 08: Flash Loans & Atomic Arbitrage Execution
 
-**Estado:** Fase **6** ✅ — unauthorized + reentrancy verificados. Siguiente: fase **7** (fuzz + invariant).
+**Estado:** Fase **7** ✅ — fuzz + invariant. Siguiente: fase **8** (fork opcional + gas + NatSpec).
 
 ## 1. Objetivo del proyecto
 
@@ -231,7 +231,7 @@ El balance del pool al final debe ser ≥ balance inicial + fee (liquidez no dre
 | **4** | `onFlashLoan` auth + swaps + repay + profit to owner | ✅ |
 | **5** | Unprofitable revert (AMMs equilibrados / fee > spread) | ✅ |
 | **6** | Unauthorized: callback directo, initiator falso, reentrancy | ✅ |
-| **7** | Fuzz amounts + invariant liquidez pool ≥ pre + fees netas | ⬜ |
+| **7** | Fuzz amounts + invariant liquidez pool ≥ pre + fees netas | ✅ |
 | **8** | Fork opcional + gas snapshot + NatSpec | ⬜ |
 
 ---

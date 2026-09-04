@@ -2,7 +2,7 @@
 
 Proveedor de flash loans **ERC-3156** y ejecutor de arbitraje atómico entre dos AMMs. Solidity `0.8.24` + Foundry.
 
-**Estado:** Fase **6** ✅ (unauthorized). Fase 7: fuzz + invariant de liquidez.
+**Estado:** Fase **7** ✅ (fuzz + invariant). Fase 8: fork opcional + gas snapshot + NatSpec.
 
 ---
 
@@ -44,15 +44,18 @@ forge test
 
 ---
 
-## Estructura (fase 6)
+## Estructura (fase 7)
 
 ```
 src/FlashLoanPool.sol
 src/AtomicArbitrage.sol
-test/FlashLoanPool.t.sol           # 20 PASS
-test/AtomicArbitrage.t.sol         # 11 PASS
-test/Unauthorized.t.sol            # 5 PASS (EOA / fake lender / initiator / reentrancy)
+test/FlashLoanPool.t.sol
+test/AtomicArbitrage.t.sol
+test/Unauthorized.t.sol
+test/fuzz/FlashLoan.fuzz.t.sol           # 8 PASS (1000 runs)
+test/invariant/FlashLoanHandler.sol
+test/invariant/FlashLoan.invariant.t.sol # 4 PASS (256 runs)
 doc/
 ```
 
-Pendiente: fuzz + invariant (fase 7), fork/gas/NatSpec (fase 8).
+Pendiente: fork / gas / NatSpec (fase 8).
