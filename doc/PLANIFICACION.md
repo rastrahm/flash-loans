@@ -1,6 +1,6 @@
 # Planificación — Module 08: Flash Loans & Atomic Arbitrage Execution
 
-**Estado:** Fase **3** ✅ — tests TDD de `AtomicArbitrage` + mocks AMM en rojo. Siguiente: fase **4** (implementar callback + swaps).
+**Estado:** Fase **5** ✅ — unprofitable atómico verificado. Siguiente: fase **6** (unauthorized callback).
 
 ## 1. Objetivo del proyecto
 
@@ -228,8 +228,8 @@ El balance del pool al final debe ser ≥ balance inicial + fee (liquidez no dre
 | **1** | Tests failing: `flashLoan`, fee, maxLoan, reverts | ✅ |
 | **2** | `FlashLoanPool` mínimo (deposit + flashLoan sin arbitraje) | ✅ |
 | **3** | Tests failing `AtomicArbitrage` + mocks AMM desbalanceados | ✅ |
-| **4** | `onFlashLoan` auth + swaps + repay + profit to owner | ⬜ |
-| **5** | Unprofitable revert (AMMs equilibrados / fee > spread) | ⬜ |
+| **4** | `onFlashLoan` auth + swaps + repay + profit to owner | ✅ |
+| **5** | Unprofitable revert (AMMs equilibrados / fee > spread) | ✅ |
 | **6** | Unauthorized: callback directo, initiator falso, reentrancy | ⬜ |
 | **7** | Fuzz amounts + invariant liquidez pool ≥ pre + fees netas | ⬜ |
 | **8** | Fork opcional + gas snapshot + NatSpec | ⬜ |
@@ -257,17 +257,17 @@ Invariante de capital: un flash loan que revierte **no** cambia balances de pool
 
 - [x] Scaffold Foundry (`0.8.24`, fuzz ≥ 1000)
 - [x] `FlashLoanPool` implementa `IERC3156FlashLender`
-- [ ] `AtomicArbitrage` implementa `IERC3156FlashBorrower`
-- [ ] Callback: `msg.sender == flashLender` e `initiator == address(this)`
-- [ ] Custom errors obligatorios (los cuatro del módulo)
-- [ ] Trade no rentable → revert atómico; liquidez del pool intacta
-- [ ] Profit transferido a `owner` sin variables de estado de acumulado
+- [x] `AtomicArbitrage` implementa `IERC3156FlashBorrower`
+- [x] Callback: `msg.sender == flashLender` e `initiator == address(this)`
+- [x] Custom errors obligatorios (los cuatro del módulo)
+- [x] Trade no rentable → revert atómico; liquidez del pool intacta
+- [x] Profit transferido a `owner` sin variables de estado de acumulado
 - [x] `ReentrancyGuard` en `flashLoan`
 - [ ] Terceros no pueden invocar el callback con éxito
-- [ ] Mocks de dos AMMs con imbalance verifican ejecución atómica
-- [ ] `vm.expectRevert` en todos los caminos de fallo
+- [x] Mocks de dos AMMs con imbalance verifican ejecución atómica
+- [x] `vm.expectRevert` en todos los caminos de fallo
 - [ ] NatSpec en funciones public/external
-- [ ] CEI + SafeERC20; sin `transfer`/`send` de ETH
+- [x] CEI + SafeERC20; sin `transfer`/`send` de ETH
 
 ---
 
