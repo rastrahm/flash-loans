@@ -2,7 +2,7 @@
 
 Proveedor de flash loans **ERC-3156** y ejecutor de arbitraje atómico entre dos AMMs. Solidity `0.8.24` + Foundry.
 
-**Estado:** Fase **3** ✅ (tests TDD arb en rojo). Fase 4: `onFlashLoan` + swaps + profit.
+**Estado:** Fase **5** ✅ (unprofitable atómico). Fase 6: unauthorized callback / initiator falso.
 
 ---
 
@@ -44,17 +44,15 @@ forge test
 
 ---
 
-## Estructura (fase 3)
+## Estructura (fase 5)
 
 ```
-src/FlashLoanPool.sol              # 20 PASS
-src/AtomicArbitrage.sol            # esqueleto TDD (NotImplemented)
-src/mocks/MockERC20.sol
-src/mocks/MockAMM.sol              # x*y=k fee 0.3%, reservas seteables
-test/FlashLoanPool.t.sol
-test/AtomicArbitrage.t.sol         # 5 PASS / 3 FAIL (execute)
-test/helpers/FlashBorrowers.sol
+src/FlashLoanPool.sol
+src/AtomicArbitrage.sol
+src/mocks/MockAMM.sol
+test/FlashLoanPool.t.sol           # 20 PASS
+test/AtomicArbitrage.t.sol         # 11 PASS (incl. unprofitable atómico)
 doc/
 ```
 
-Pendiente: lógica de `AtomicArbitrage` (fase 4).
+Pendiente: unauthorized (fase 6), fuzz/invariant (fase 7).
