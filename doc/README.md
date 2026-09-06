@@ -14,4 +14,4 @@
 **Estado:** Fases **0–8** ✅ (módulo cerrado).
 
 **Contratos:** `FlashLoanPool` · `AtomicArbitrage` · `ArbitrageMath` · mocks  
-**Estándar:** ERC-3156 · **Tests:** `forge test` → **56 PASS** (+ 2 skip sin RPC)
+**Estándar:** ERC-3156 · **Tests:** `forge test` → **65 PASS** (+ 2 skip sin RPC) · incl. `test/attack/`

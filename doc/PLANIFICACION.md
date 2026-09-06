@@ -243,8 +243,9 @@ El balance del pool al final debe ser ≥ balance inicial + fee (liquidez no dre
 | Unit lender | `test/FlashLoanPool.t.sol` | maxLoan, fee, repay, unsupported token |
 | Unit arb | `test/AtomicArbitrage.t.sol` | Spread artificial → profit a owner |
 | Unprofitable | mismo | AMMs sin spread / fee excesiva → revert, pool intacto |
-| Unauthorized | `test/Unauthorized.t.sol` | `onFlashLoan` desde EOA / lender falso |
-| Reentrancy | `test/FlashLoanPool.t.sol` | Receiver malicioso reentra `flashLoan` |
+| Unauthorized | `test/Unauthorized.t.sol` | Auth unit (`UntrustedLender` / `InvalidInitiator`) |
+| Attack | `test/attack/` | Reentrancy, callback spoof, loan default |
+| Reentrancy (unit) | `test/FlashLoanPool.t.sol` | Receiver malicioso reentra `flashLoan` |
 | Fuzz | `test/fuzz/FlashLoan.fuzz.t.sol` | `bound(amount)` vs liquidez y fee |
 | Fork | `test/fork/Arbitrage.fork.t.sol` | Skip sin `MAINNET_RPC_URL` |
 | Invariant | `test/invariant/` | `balance(pool) >= deposits + feesAcumulados - withdraws` |
