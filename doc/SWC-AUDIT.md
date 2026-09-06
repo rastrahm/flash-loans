@@ -7,7 +7,7 @@ Verificación de `FlashLoanPool` y `AtomicArbitrage` contra el [SWC Registry](ht
 **Contratos auditados:** `src/FlashLoanPool.sol`, `src/AtomicArbitrage.sol`, `src/libraries/ArbitrageMath.sol` (+ interfaces)  
 **Mocks (fuera de prod):** `src/mocks/MockAMM.sol`, `src/mocks/MockERC20.sol`  
 **Fecha:** 2026-09-04  
-**Referencia tests:** `test/FlashLoanPool.t.sol`, `test/AtomicArbitrage.t.sol`, `test/Unauthorized.t.sol`, `test/fuzz/`, `test/invariant/`  
+**Referencia tests:** `test/FlashLoanPool.t.sol`, `test/AtomicArbitrage.t.sol`, `test/Unauthorized.t.sol`, `test/attack/`, `test/fuzz/`, `test/invariant/`, `test/gas/`, `test/fork/`  
 **Estilo:** alineado a [`07-liquidity-pools/doc/SWC-AUDIT.md`](../../07-liquidity-pools/doc/SWC-AUDIT.md)
 
 ---
@@ -147,7 +147,7 @@ Cubierto en `test/Unauthorized.t.sol`.
 | 2 | ~~`feeBps` sin cota superior~~ → `FeeBpsTooHigh` | Resuelto F8 | `feeBps <= 10_000` |
 | 3 | Swaps con `minOut = 0` | Info (MEV) | Codificar mínimos por hop en `params` (v2) |
 | 4 | ~~NatSpec / gas snapshot incompletos~~ | Resuelto F8 | `GAS.md` + NatSpec API |
-| 5 | Sin suite `test/attack/` dedicada (estilo 07) | Proceso | Cubierto por `Unauthorized` + reentrancy unit |
+| 5 | ~~Sin suite `test/attack/` dedicada~~ | Resuelto | `ReentrancyAttack` · `CallbackSpoofAttack` · `LoanDefaultAttack` |
 
 ---
 
@@ -158,12 +158,12 @@ Cubierto en `test/Unauthorized.t.sol`.
 | SWC-101 | `testFuzz_flashFee_*`, `testFuzz_flashLoan_poolGainsExactFee`, `testFuzz_execute_*` |
 | SWC-103 | Compilador fijo (`forge build`) |
 | SWC-104 | Unit deposit/withdraw/flashLoan; `LoanRepaymentFailed` (deadbeat borrower) |
-| SWC-107 | `test_flashLoan_revertsOnReentrancy`, `test_flashLoan_reentrancyFromMaliciousBorrower_reverts` |
-| SWC-113 | Unprofitable / CallbackFailed / LoanRepaymentFailed → capital intacto |
+| SWC-107 | `test/attack/ReentrancyAttack.t.sol` + unit `test_flashLoan_revertsOnReentrancy` |
+| SWC-113 | `test/attack/LoanDefaultAttack.t.sol` + unprofitable AtomicArbitrage |
 | SWC-114 | Documental; `minProfit` en fuzz/unit |
-| SWC-123 | unit Pool/Arb + Unauthorized + fuzz + invariant |
-| Auth callback | `Unauthorized.t.sol` (EOA, fake lender, third-party initiator) |
-| Atomicidad | `test_execute_balancedAmms_*`, `test_execute_feeExceedsSpread_*`, `test_execute_wrongDirection_*` |
+| SWC-123 | unit Pool/Arb + Unauthorized + attack + fuzz + invariant |
+| Auth callback | `test/attack/CallbackSpoofAttack.t.sol` + `Unauthorized.t.sol` |
+| Atomicidad | `test_execute_balancedAmms_*`, `LoanDefaultAttack`, unprofitable |
 | Liquidez | `invariant_balanceEqualsGhostAccounting`, `invariant_maxFlashLoanEqualsBalance` |
 
 ---
@@ -172,14 +172,17 @@ Cubierto en `test/Unauthorized.t.sol`.
 
 ```text
 forge test --summary
-AtomicArbitrageTest    11 PASS
-FlashLoanPoolTest      22 PASS
-UnauthorizedTest        5 PASS
-FlashLoanFuzzTest       8 PASS (1000 runs c/u)
-FlashLoanInvariantTest  4 PASS (256 runs)
-FlashLoanGasTest        6 PASS
-ArbitrageForkTest       2 SKIP (sin MAINNET_RPC_URL) / PASS con RPC
-Total: 56 PASS / 0 FAIL / 2 SKIP
+AtomicArbitrageTest       11 PASS
+FlashLoanPoolTest         22 PASS
+UnauthorizedTest           3 PASS
+CallbackSpoofAttackTest    4 PASS
+LoanDefaultAttackTest      3 PASS
+ReentrancyAttackTest       4 PASS
+FlashLoanFuzzTest          8 PASS
+FlashLoanInvariantTest     4 PASS
+FlashLoanGasTest           6 PASS
+ArbitrageForkTest          2 SKIP (sin MAINNET_RPC_URL)
+Total: 65 PASS / 0 FAIL / 2 SKIP
 ```
 
 ---

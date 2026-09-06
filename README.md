@@ -75,6 +75,9 @@ src/mocks/MockAMM.sol
 test/FlashLoanPool.t.sol
 test/AtomicArbitrage.t.sol
 test/Unauthorized.t.sol
+test/attack/ReentrancyAttack.t.sol
+test/attack/CallbackSpoofAttack.t.sol
+test/attack/LoanDefaultAttack.t.sol
 test/fuzz/
 test/invariant/
 test/gas/FlashLoan.gas.t.sol
@@ -87,4 +90,4 @@ doc/
 
 ## Tests
 
-`forge test` → **56 PASS** · **2 SKIP** (fork sin `MAINNET_RPC_URL`)
+`forge test` → **65 PASS** · **2 SKIP** (fork sin `MAINNET_RPC_URL`)
