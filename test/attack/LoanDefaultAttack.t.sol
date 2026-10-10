@@ -11,7 +11,7 @@ import {BadCallbackBorrower, NonRepayingBorrower} from "../helpers/FlashBorrower
 /**
  * @title LoanDefaultAttackTest
  * @notice Ataques de impago / callback inválido: el pool no pierde liquidez (atomicidad).
- * @dev Referencia: `doc/SWC-AUDIT.md` · `LoanRepaymentFailed` / `CallbackFailed`.
+ * @dev Referencia: `doc/SWC-AUDIT-ES.md` · `LoanRepaymentFailed` / `CallbackFailed`.
  */
 contract LoanDefaultAttackTest is Test {
     uint256 internal constant FEE_BPS = 5;

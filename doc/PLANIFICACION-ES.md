@@ -1,3 +1,5 @@
+> 🌐 [English](./PLANIFICACION-EN.md) · **Español**
+
 # Planificación — Module 08: Flash Loans & Atomic Arbitrage Execution
 
 **Estado:** Fases **0–8** ✅ — módulo cerrado (NatSpec + gas + Deploy + fork opcional + `FeeBpsTooHigh`).
@@ -61,11 +63,11 @@ Proveedor de **flash loans ERC-3156** y ejecutor de **arbitraje atómico** entre
 ```
 08-flash-loans/
 ├── doc/
-│   ├── README.md
-│   ├── PLANIFICACION.md
-│   ├── diagrama-clases.md
-│   ├── diagrama-flujo.md
-│   └── flujograma.md
+│   ├── README-ES.md
+│   ├── PLANIFICACION-ES.md
+│   ├── diagrama-clases-ES.md
+│   ├── diagrama-flujo-ES.md
+│   └── flujograma-ES.md
 ├── src/
 │   ├── FlashLoanPool.sol                 # IERC3156FlashLender + liquidez
 │   ├── AtomicArbitrage.sol               # IERC3156FlashBorrower + executor
@@ -269,7 +271,7 @@ Invariante de capital: un flash loan que revierte **no** cambia balances de pool
 - [x] `vm.expectRevert` en todos los caminos de fallo
 - [x] NatSpec en funciones public/external
 - [x] CEI + SafeERC20; sin `transfer`/`send` de ETH
-- [x] Gas baseline (`doc/GAS.md` + `.gas-snapshot`)
+- [x] Gas baseline (`doc/GAS-ES.md` + `.gas-snapshot`)
 - [x] `FeeBpsTooHigh` si `feeBps > 10_000`
 - [x] Fork suite con skip sin `MAINNET_RPC_URL`
 - [x] `script/Deploy.s.sol` para Anvil
@@ -280,11 +282,12 @@ Invariante de capital: un flash loan que revierte **no** cambia balances de pool
 
 | Documento | Contenido |
 |-----------|-----------|
-| [diagrama-clases.md](./diagrama-clases.md) | UML contratos, interfaces ERC-3156, tests |
-| [diagrama-flujo.md](./diagrama-flujo.md) | Secuencia flash loan → swaps → repay |
-| [flujograma.md](./flujograma.md) | Operativo, seguridad, TDD |
-| [SWC-AUDIT.md](./SWC-AUDIT.md) | Matriz SWC-100–136 + mapeo a tests |
-| [GAS.md](./GAS.md) | Baseline gas, optimizaciones, snapshot |
+| [diagrama-clases-ES.md](./diagrama-clases-ES.md) | UML contratos, interfaces ERC-3156, tests |
+| [diagrama-flujo-ES.md](./diagrama-flujo-ES.md) | Secuencia flash loan → swaps → repay |
+| [flujograma-ES.md](./flujograma-ES.md) | Operativo, seguridad, TDD |
+| [SWC-AUDIT-ES.md](./SWC-AUDIT-ES.md) | Matriz SWC-100–136 + mapeo a tests |
+| [GAS-ES.md](./GAS-ES.md) | Baseline gas, optimizaciones, snapshot |
+| [DECISIONES-Y-LOGICA-ES.md](./DECISIONES-Y-LOGICA-ES.md) | Decisiones técnicas, flujo, mejoras de gas |
 
 ---
 

@@ -1,3 +1,5 @@
+> 🌐 [English](./SWC-AUDIT-EN.md) · **Español**
+
 # Auditoría SWC — Flash Loans & Atomic Arbitrage
 
 Verificación de `FlashLoanPool` y `AtomicArbitrage` contra el [SWC Registry](https://swcregistry.io/) (EIP-1470) y principios del monorepo (custom errors, `ReentrancyGuard`, SafeERC20, ERC-3156, auth de callback).
@@ -125,7 +127,7 @@ Cubierto en `test/Unauthorized.t.sol`.
 | NatSpec públicas/externas | ✅ | Fase 8 |
 | Fuzz ≥ 1000 runs | ✅ | `test/fuzz/FlashLoan.fuzz.t.sol` |
 | Invariantes liquidez | ✅ | `balance == deposits + fees − withdraws` |
-| Gas baseline | ✅ | `doc/GAS.md` + `.gas-snapshot` |
+| Gas baseline | ✅ | `doc/GAS-ES.md` + `.gas-snapshot` |
 | Cap `feeBps` | ✅ | `FeeBpsTooHigh` si `> 10_000` |
 
 ---
@@ -146,7 +148,7 @@ Cubierto en `test/Unauthorized.t.sol`.
 | 1 | `deposit` / `withdraw` sin `nonReentrant` | Info | Bajo riesgo (sin máquina de estados); opcional alinear con suite |
 | 2 | ~~`feeBps` sin cota superior~~ → `FeeBpsTooHigh` | Resuelto F8 | `feeBps <= 10_000` |
 | 3 | Swaps con `minOut = 0` | Info (MEV) | Codificar mínimos por hop en `params` (v2) |
-| 4 | ~~NatSpec / gas snapshot incompletos~~ | Resuelto F8 | `GAS.md` + NatSpec API |
+| 4 | ~~NatSpec / gas snapshot incompletos~~ | Resuelto F8 | `GAS-ES.md` + NatSpec API |
 | 5 | ~~Sin suite `test/attack/` dedicada~~ | Resuelto | `ReentrancyAttack` · `CallbackSpoofAttack` · `LoanDefaultAttack` |
 
 ---
@@ -193,4 +195,4 @@ Total: 65 PASS / 0 FAIL / 2 SKIP
 - [EIP-1470](https://eips.ethereum.org/EIPS/eip-1470)
 - [ERC-3156](https://eips.ethereum.org/EIPS/eip-3156)
 - Módulo 07: [`07-liquidity-pools/doc/SWC-AUDIT.md`](../../07-liquidity-pools/doc/SWC-AUDIT.md)
-- Plan: [`PLANIFICACION.md`](./PLANIFICACION.md)
+- Plan: [`PLANIFICACION-ES.md`](./PLANIFICACION-ES.md)

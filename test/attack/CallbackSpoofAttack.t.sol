@@ -30,7 +30,7 @@ contract FakeLender {
 /**
  * @title CallbackSpoofAttackTest
  * @notice Ataques de spoofing del callback ERC-3156: EOA, lender falso, initiator de tercero.
- * @dev Referencia: `doc/SWC-AUDIT.md` · `UntrustedLender` / `InvalidInitiator`.
+ * @dev Referencia: `doc/SWC-AUDIT-ES.md` · `UntrustedLender` / `InvalidInitiator`.
  */
 contract CallbackSpoofAttackTest is Test {
     uint256 internal constant FEE_BPS = 5;

@@ -1,3 +1,5 @@
+> 🌐 [English](./flujograma-EN.md) · **Español**
+
 # Flujograma del proyecto — Flash Loans & Atomic Arbitrage
 
 Flujograma operativo **to-be** (v1): setup → liquidez → execute → callback → repay → seguridad → TDD.
