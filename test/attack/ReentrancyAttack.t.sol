@@ -38,7 +38,7 @@ contract NestedReenterBorrower is IERC3156FlashBorrower {
 /**
  * @title ReentrancyAttackTest
  * @notice SWC-107: callbacks maliciosos no reentran `flashLoan`; liquidez del pool intacta.
- * @dev Referencia: `doc/SWC-AUDIT.md` · patrón monorepo módulo 07.
+ * @dev Referencia: `doc/SWC-AUDIT-ES.md` · patrón monorepo módulo 07.
  */
 contract ReentrancyAttackTest is Test {
     uint256 internal constant FEE_BPS = 5;

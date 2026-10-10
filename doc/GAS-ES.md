@@ -1,3 +1,5 @@
+> 🌐 [English](./GAS-EN.md) · **Español**
+
 # Optimización de gas — Flash Loans & Atomic Arbitrage
 
 Regenerar:
@@ -78,4 +80,4 @@ forge snapshot --match-contract FlashLoanGasTest
 
 ## Relación con seguridad
 
-Ver [`SWC-AUDIT.md`](./SWC-AUDIT.md): SafeERC20 / try-catch cubren SWC-104; `nonReentrant` + auth callback cubren SWC-107; fuzz/invariant validan que las opts no rompen la contabilidad de liquidez.
+Ver [`SWC-AUDIT-ES.md`](./SWC-AUDIT-ES.md): SafeERC20 / try-catch cubren SWC-104; `nonReentrant` + auth callback cubren SWC-107; fuzz/invariant validan que las opts no rompen la contabilidad de liquidez.

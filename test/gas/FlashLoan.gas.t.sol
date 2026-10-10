@@ -11,7 +11,7 @@ import {RepayingBorrower} from "../helpers/FlashBorrowers.sol";
 
 /**
  * @title FlashLoanGasTest
- * @notice Baseline de gas para `forge snapshot` y `doc/GAS.md` (Fase 8).
+ * @notice Baseline de gas para `forge snapshot` y `doc/GAS-ES.md` (Fase 8).
  */
 contract FlashLoanGasTest is Test {
     uint256 internal constant FEE_BPS = 5;

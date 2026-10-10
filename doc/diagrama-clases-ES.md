@@ -1,3 +1,5 @@
+> 🌐 [English](./diagrama-clases-EN.md) · **Español**
+
 # Diagrama de clases — Flash Loans & Atomic Arbitrage
 
 Modelo estructural **to-be** (módulo 08). Contratos, interfaces ERC-3156, mocks y tests.

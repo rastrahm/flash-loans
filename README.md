@@ -1,93 +1,42 @@
 # 08 — Flash Loans & Atomic Arbitrage
 
-Proveedor de flash loans **ERC-3156** y ejecutor de arbitraje atómico entre dos AMMs. Solidity `0.8.24` + Foundry.
+**ERC-3156** flash loan provider + atomic arbitrage executor across two AMMs · Solidity `0.8.24` + Foundry.
 
-**Estado:** Fases **0–8** ✅ (módulo cerrado).
-
----
-
-## Stack
-
-| Capa | Tecnología |
-|------|------------|
-| Contratos | Solidity `0.8.24` |
-| Tooling | Foundry (`forge` / `cast` / `anvil`) |
-| Estándar | ERC-3156 (`IERC3156FlashLender` / `IERC3156FlashBorrower`) |
-| Librerías | OpenZeppelin Contracts v5.2, forge-std |
-| Seguridad | CEI, ReentrancyGuard, custom errors, SafeERC20 |
+Proveedor de flash loans **ERC-3156** + ejecutor de arbitraje atómico entre dos AMMs · Solidity `0.8.24` + Foundry.
 
 ---
 
-## Documentación
+## 🌐 Choose a language · Elegí idioma
 
-| Doc | Descripción |
-|-----|-------------|
-| [doc/README.md](./doc/README.md) | Índice de documentación |
-| [doc/PLANIFICACION.md](./doc/PLANIFICACION.md) | Plan, fases TDD y criterios de aceptación |
-| [doc/SWC-AUDIT.md](./doc/SWC-AUDIT.md) | Auditoría SWC-100–136 y mapeo a tests |
-| [doc/GAS.md](./doc/GAS.md) | Gas report baseline y optimizaciones |
-| [doc/diagrama-clases.md](./doc/diagrama-clases.md) | UML de contratos |
-| [doc/diagrama-flujo.md](./doc/diagrama-flujo.md) | Flujos flash loan / callback / repay |
-| [doc/flujograma.md](./doc/flujograma.md) | Flujograma operativo y pipeline TDD |
+| | English | Español |
+|---|---------|---------|
+| **README** | [README-EN.md](./README-EN.md) | [README-ES.md](./README-ES.md) |
 
 ---
 
-## Setup
+## 📚 Documentation index · Índice de documentación
+
+| Document · Documento | English | Español |
+|----------------------|---------|---------|
+| Docs index · Índice de docs | [README-EN](./doc/README-EN.md) | [README-ES](./doc/README-ES.md) |
+| Planning · Planificación | [PLANIFICACION-EN](./doc/PLANIFICACION-EN.md) | [PLANIFICACION-ES](./doc/PLANIFICACION-ES.md) |
+| Decisions & logic · Decisiones y lógica | [DECISIONES-Y-LOGICA-EN](./doc/DECISIONES-Y-LOGICA-EN.md) | [DECISIONES-Y-LOGICA-ES](./doc/DECISIONES-Y-LOGICA-ES.md) |
+| SWC audit · Auditoría SWC | [SWC-AUDIT-EN](./doc/SWC-AUDIT-EN.md) | [SWC-AUDIT-ES](./doc/SWC-AUDIT-ES.md) |
+| Gas · Gas | [GAS-EN](./doc/GAS-EN.md) | [GAS-ES](./doc/GAS-ES.md) |
+| Class diagram · Diagrama de clases | [diagrama-clases-EN](./doc/diagrama-clases-EN.md) | [diagrama-clases-ES](./doc/diagrama-clases-ES.md) |
+| Flow diagrams · Diagramas de flujo | [diagrama-flujo-EN](./doc/diagrama-flujo-EN.md) | [diagrama-flujo-ES](./doc/diagrama-flujo-ES.md) |
+| Flowchart · Flujograma | [flujograma-EN](./doc/flujograma-EN.md) | [flujograma-ES](./doc/flujograma-ES.md) |
+| Social drafts · Borradores redes | [SOCIAL-EN](./doc/SOCIAL-EN.md) | [SOCIAL-ES](./doc/SOCIAL-ES.md) |
+
+**Portfolio (ES/EN):** [portfolio/index.html](./portfolio/index.html)
+
+---
+
+## ⚡ Quick start
 
 ```shell
-export PATH="$HOME/.foundry/bin:$PATH"
-
-forge install foundry-rs/forge-std@v1.16.2 --no-git
-forge install OpenZeppelin/openzeppelin-contracts@v5.2.0 --no-git
-
 forge build
 forge test
-forge snapshot --match-contract FlashLoanGasTest
 ```
 
-Fork opcional:
-
-```shell
-# En `.env` (copiar desde `.env.example`)
-MAINNET_RPC_URL=https://...
-forge test --match-path test/fork/
-```
-
----
-
-## Deploy local (Anvil)
-
-```shell
-anvil
-forge script script/Deploy.s.sol:Deploy --rpc-url http://127.0.0.1:8545 --broadcast
-```
-
----
-
-## Estructura
-
-```
-src/FlashLoanPool.sol
-src/AtomicArbitrage.sol
-src/libraries/ArbitrageMath.sol
-src/mocks/MockERC20.sol
-src/mocks/MockAMM.sol
-test/FlashLoanPool.t.sol
-test/AtomicArbitrage.t.sol
-test/Unauthorized.t.sol
-test/attack/ReentrancyAttack.t.sol
-test/attack/CallbackSpoofAttack.t.sol
-test/attack/LoanDefaultAttack.t.sol
-test/fuzz/
-test/invariant/
-test/gas/FlashLoan.gas.t.sol
-test/fork/Arbitrage.fork.t.sol
-script/Deploy.s.sol
-doc/
-```
-
----
-
-## Tests
-
-`forge test` → **65 PASS** · **2 SKIP** (fork sin `MAINNET_RPC_URL`)
+**Repos:** [GitHub](https://github.com/rastrahm/flash-loans) · [GitLab](https://gitlab.com/rastrahm/flash-loans)
